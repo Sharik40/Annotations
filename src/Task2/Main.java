@@ -43,12 +43,11 @@ public class Main {
         Class<?> cls = tc.getClass();
         SaveTo saveto = cls.getAnnotation(SaveTo.class);
         String path = saveto.path();
-        Method method = cls.getDeclaredMethod("save", String.class);
-
-        if (method.isAnnotationPresent(Saver.class)) {
-            method.invoke(tc, path);
+        Method[] methods = cls.getDeclaredMethods();
+        for (Method method: methods) {
+            if (method.isAnnotationPresent(Saver.class)) {
+                method.invoke(tc, path);
+            }
         }
-        else
-            System.out.println("Something wrong");
     }
 }
